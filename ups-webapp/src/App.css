@@ -1,0 +1,11 @@
+.App {
+  text-align: left;
+}
+
+.App .navbar-brand {
+  font-weight: bold;
+}
+
+.App .container{
+  align-content: center
+}
