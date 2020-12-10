@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import Input from '../Components/Input'
-import Form from '../Components/Form';
 
 import classes from './webform.module.css';
+
 import axios from 'axios';
 
 class Webform extends Component {  
-
+   
+    
     constructor(props) {    
         super(props);
         console.log('|App.js| constructor');
@@ -47,29 +48,52 @@ class Webform extends Component {
             }
         },
         quote:{
-            partnerId: 'API7983', 
-            shipDate: new Date('2020-12-12'), 
-            billoflading:'xxx',
-            insuredValue:0, 
-            carrier:'UPS',
-            shipmentType:'2', 
-            commodity:'',
-            originAddress:'',             
-            originAddress2:'', 
-            originCity:'',
-            originState:'',
-            originPostalZip:'',
-            originCountryCode:'',
-            consignee:'',
-            destinationAddress:'',
-            destinationAddress2:'',
-            destinationCity:'',
-            destinationState:'',
-            destinationPostalZip:'',
-            destinationCountryCode:'',
-            serviceLevel:'',
-            packageQuantity:'',
-            referenceFields:''}
+            "partnerId" : "API7983",
+            "shipDate" : "2020-12-17",
+            "bol" : "xxx",
+            "insuredValue" : 1000,
+            "carrier" : "UPS",
+            "shipmentType" : "2",
+            "originAddress1" : "595 Huron St",
+            "originCity" : "Toronto",
+            "originState" : "ON",
+            "originPostalCoe" : "M5R2R8",
+            "originCountry" : "CA",
+            "destinationAddress1" : "1450 Burnaby St",
+            "destinationCity" : "Vancouver",
+            "destinationState" : "BC",
+            "destinationPostalCode" : "V6G1W7",
+            "destinationCountry" : "CA"
+        }
+        
+        
+        
+        
+        
+        /*quote:  {
+                partnerId: 'API7983', 
+                shipDate: new Date('2020-12-12'), 
+                billoflading:'xxx',
+                insuredValue:100, 
+                carrier:'UPS',
+                shipmentType:'2', 
+                commodity:'',
+                originAddress:'',             
+                originAddress2:'', 
+                originCity:'',
+                originState:'',
+                originPostalZip:'',
+                originCountryCode:'',
+                consignee:'',
+                destinationAddress:'',
+                destinationAddress2:'',
+                destinationCity:'',
+                destinationState:'',
+                destinationPostalZip:'',
+                destinationCountryCode:'',
+                serviceLevel:'',
+                packageQuantity:'',
+                referenceFields:''}*/
     }
 
 /*    setQuoteId = (qId) => {
@@ -78,23 +102,11 @@ class Webform extends Component {
         this.setState({quote: tempQuote});
     }*/
 
-    /*componentDidMount(quote){
-        fetch("https://cors-anywhere.herokuapp.com/https://upscapi.ams1907.com/apis/list-extstg/quote/v2")
-        .then(quote=>quote.json())
-        .then(
-            (result) =>
-            this.setState({
-                success:true,
-                response:result.data
-            })
-        )
-    }*/
 
     onClickHandler = (event) => {
         alert('Quote request has been submitted');
         console.log('Quote request has been submitted');
         console.log('quote: ', this.state.quote);
-
         axios.post(this.state.url,this.state.quote,{
             headers:{
                 "Access-Control-Allow-Origin": "*",
@@ -313,33 +325,195 @@ class Webform extends Component {
             <div className='Webform'>
                 <h1>Webform</h1>
                 <p> Quote Submission Form:</p>
-                <Form
-                    partnerChanged={this.onPartnerChangeHandler}
-                    shipDateChanged={this.onShipChangeHandler}
-                    bolChanged={this.onBolChangeHandler}
-                    valChanged={this.onValChangeHandler}
-                    carrierChanged={this.onCarrierChangeHandler}
-                    shipTypeChanged={this.onShipTypeChangeHandler}
-                    commodityChanged={this.onCommodityChangeHandler}
-                    oAddChanged={this.onOaddChangeHandler}
-                    oAdd2Changed={this.onOadd2ChangeHandler}
-                    oCityChanged={this.onOcityChangeHandler}
-                    oStateChanged={this.onOstateChangeHandler}
-                    oPostChanged={this.onOpostChangeHandler}
-                    oCountryChanged={this.onOcountryChangeHandler}
-                    conChanged={this.onConsigneeChangeHandler}
-                    desAddChanged={this.onDestAdd2ChangeHandler}
-                    dAdd2Changed={this.onDestAdd2ChangeHandler}
-                    dCityChanged={this.onDestCityChangeHandler}
-                    dStateChanged={this.onDestStateChangeHandler}
-                    dPostChanged={this.onDestPChangeHandler}
-                    dCountryChanged={this.onDestCounChangeHandler}
-                    serChanged={this.onServLChangeHandler}
-                    pQChanged={this.onPkgQChangeHandler}
-                    refChanged={this.onRefFieldChangeHandler}
-                    clicked={this.onClickHandler}
-                    />
-            
+                <h5>{status}</h5>
+                <h3>*Partner ID:
+                <input 
+                        type='text' 
+                        id='partnerId' 
+                        className={classes.input}       
+                        onChange={this.onPartnerChangeHandler}
+                        />
+                </h3>
+                <h3>*Shipping Date:
+                    <input 
+                        type='date' 
+                        id='shipDate' 
+                        className={classes.input}
+                        onChange={this.onShipChangeHandler}
+                        /> 
+                </h3>
+                <h3>*Bill of Lading:
+                    <input 
+                        type='text'
+                        id='bol' 
+                        className={classes.input} 
+                        onChange={this.onBolChangeHandler}
+                        /> 
+                </h3>
+                <h3>*Insured Value:
+                    <input 
+                        type='number' 
+                        id='insuredValue' 
+                        className={classes.input} 
+                        onChange={this.onValChangeHandler}
+                        />        
+                </h3>
+                <h3>*Carrier:
+                    <input 
+                        type='text' 
+                        id='carrier' 
+                        className={classes.input} 
+                        onChange={this.onCarrierChangeHandler}
+                        /> 
+                </h3>
+                <h3>*Shipment Type:
+                    <input 
+                        type='text' id='shipmentType' 
+                        className={classes.input} 
+                        onChange={this.onShipTypeChangeHandler}
+                        /> 
+                </h3>
+                <h3>Commodity:
+                    <input 
+                        type='text' 
+                        id='commodity' 
+                        className={classes.input} 
+                        onChange={this.onCommodityChangeHandler}
+                        /> 
+                </h3>
+                <h3>*Origin Address:
+                    <input 
+                        type='text' 
+                        id='originAddress' 
+                        className={classes.input} 
+                        onChange={this.onOaddChangeHandler}
+                        /> 
+                </h3>
+                <h3>*Origin Address 2:
+                    <input 
+                        type='text' 
+                        id='originAddress2' 
+                        className={classes.input} 
+                        onChange={this.onOadd2ChangeHandler}
+                        /> 
+                </h3>
+                <h3>*Origin City:
+                    <input 
+                        type='text' 
+                        id='originCity' 
+                        className={classes.input} 
+                        onChange={this.onOcityChangeHandler}
+                        /> 
+                </h3>
+                <h3>*Origin State:
+                    <input 
+                        type='text' 
+                        id='originState' 
+                        className={classes.input} 
+                        onChange={this.onOstateChangeHandler}
+                        /> 
+                </h3>
+                <h3>*Origin Postal/Zip: 
+                    <input 
+                        type='text' 
+                        id='origin-postal-zip'
+                        className={classes.input}
+                        onChange={this.onOpostChangeHandler} 
+                        /> 
+                </h3>
+                <h3>*Origin Country:
+                    <input 
+                        type='text' 
+                        id='originCountryCode' 
+                        className={classes.input} 
+                        onChange={this.onOcountryChangeHandler}
+                        /> 
+                </h3>
+                <h3>Consignee 
+                    <input 
+                        type='text' 
+                        id='consignee'  
+                        className={classes.input} 
+                        onChange={this.onConsigneeChangeHandler}
+                        />
+                </h3>
+                <h3>*Destination Address:
+                    <input 
+                        type='text' 
+                        id='destinationAddress' 
+                        className={classes.input}
+                        onChange={this.onDestAddChangeHandler} 
+                        /> 
+                </h3>
+                <h3>*Destination Address 2:
+                    <input 
+                        type='text' 
+                        id='destinationAddress2' 
+                        className={classes.input} 
+                        onChange={this.onDestAdd2ChangeHandler}
+                        /> 
+                </h3>
+                <h3>*Destination City:
+                    <input 
+                        type='text' 
+                        id='destinationCity' 
+                        className={classes.input}
+                        onChange={this.onDestCityChangeHandler}
+                         /> 
+                </h3>
+                <h3>*Destination State:
+                    <input 
+                        type='text' 
+                        id='destinationState' 
+                        className={classes.input} 
+                        onChange={this.onDestStateChangeHandler}
+                        /> 
+                </h3>
+                <h3>*Destination Postal/Zip:
+                    <input 
+                        type='text' 
+                        id='destination-postal-zip' 
+                        className={classes.input} 
+                        onChange={this.onDestPChangeHandler}
+                        /> 
+                </h3>
+                <h3>*Destination Country:
+                    <input 
+                        type='text' 
+                        id='destinationCountryCode' 
+                        className={classes.input} 
+                        onChange={this.onDestCounChangeHandler}
+                        /> 
+                </h3>
+                <h3>Service Level:
+                    <input 
+                        type='text' 
+                        id='serviceLevel' 
+                        className={classes.input} 
+                        onChange={this.onServLChangeHandler}
+                        /> 
+                </h3>
+                <h3>Package Quantity: 
+                    <input 
+                        type='number' 
+                        id='packageQuantity' 
+                        className={classes.input}
+                        onChange={this.onPkgQChangeHandler}
+                        /> 
+                </h3>
+                <h3>Reference Fields:
+                    <input 
+                        type='text' 
+                        id='referenceFields' 
+                        className={classes.input}
+                        onChange={this.onRefFieldChangeHandler}
+                        /> 
+                </h3>
+
+                <button
+                    className={classes.btn}
+                    onClick={this.onClickHandler}> Submit
+                </button>
             
             </div>
         );}

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import Form from '../Components/Form'
+import Input from '../Components/Input'
+import Form from '../Components/Form';
 
 import classes from './webform.module.css';
-
 import axios from 'axios';
 
 class Webform extends Component {  
-   
+
     constructor(props) {    
         super(props);
         console.log('|App.js| constructor');
@@ -47,52 +47,29 @@ class Webform extends Component {
             }
         },
         quote:{
-            "partnerId" : "API7983",
-            "shipDate" : "2020-12-17",
-            "bol" : "xxx",
-            "insuredValue" : 1000,
-            "carrier" : "UPS",
-            "shipmentType" : "2",
-            "originAddress1" : "595 Huron St",
-            "originCity" : "Toronto",
-            "originState" : "ON",
-            "originPostalCoe" : "M5R2R8",
-            "originCountry" : "CA",
-            "destinationAddress1" : "1450 Burnaby St",
-            "destinationCity" : "Vancouver",
-            "destinationState" : "BC",
-            "destinationPostalCode" : "V6G1W7",
-            "destinationCountry" : "CA"
-        }
-        
-        
-        
-        
-        
-        /*quote:  {
-                partnerId: 'API7983', 
-                shipDate: new Date('2020-12-12'), 
-                billoflading:'xxx',
-                insuredValue:100, 
-                carrier:'UPS',
-                shipmentType:'2', 
-                commodity:'',
-                originAddress:'',             
-                originAddress2:'', 
-                originCity:'',
-                originState:'',
-                originPostalZip:'',
-                originCountryCode:'',
-                consignee:'',
-                destinationAddress:'',
-                destinationAddress2:'',
-                destinationCity:'',
-                destinationState:'',
-                destinationPostalZip:'',
-                destinationCountryCode:'',
-                serviceLevel:'',
-                packageQuantity:'',
-                referenceFields:''}*/
+            partnerId: 'API7983', 
+            shipDate: new Date('2020-12-12'), 
+            billoflading:'xxx',
+            insuredValue:0, 
+            carrier:'UPS',
+            shipmentType:'2', 
+            commodity:'',
+            originAddress:'',             
+            originAddress2:'', 
+            originCity:'',
+            originState:'',
+            originPostalZip:'',
+            originCountryCode:'',
+            consignee:'',
+            destinationAddress:'',
+            destinationAddress2:'',
+            destinationCity:'',
+            destinationState:'',
+            destinationPostalZip:'',
+            destinationCountryCode:'',
+            serviceLevel:'',
+            packageQuantity:'',
+            referenceFields:''}
     }
 
 /*    setQuoteId = (qId) => {
@@ -101,11 +78,23 @@ class Webform extends Component {
         this.setState({quote: tempQuote});
     }*/
 
+    /*componentDidMount(quote){
+        fetch("https://cors-anywhere.herokuapp.com/https://upscapi.ams1907.com/apis/list-extstg/quote/v2")
+        .then(quote=>quote.json())
+        .then(
+            (result) =>
+            this.setState({
+                success:true,
+                response:result.data
+            })
+        )
+    }*/
 
     onClickHandler = (event) => {
         alert('Quote request has been submitted');
         console.log('Quote request has been submitted');
         console.log('quote: ', this.state.quote);
+
         axios.post(this.state.url,this.state.quote,{
             headers:{
                 "Access-Control-Allow-Origin": "*",
@@ -118,13 +107,7 @@ class Webform extends Component {
         }).then(res=>{
             this.setState({response:res.data});
             console.log(res.data);
-            this.setState({success:true});
-            this.render(){
-                return(
-                <>
-                    {response}
-                </>
-            )};
+            this.setState({success:true})
         })
     }
 
@@ -322,7 +305,6 @@ class Webform extends Component {
                 <p>Quote ID: {this.state.response.quoteId}</p>
                 <p>Premium Amount: {this.state.response.premiumAmount}</p>
                 <p>Status: {this.state.response.quoteInfo.status} </p>
-                <Form/>
             </div>
         )
     };
@@ -331,9 +313,34 @@ class Webform extends Component {
             <div className='Webform'>
                 <h1>Webform</h1>
                 <p> Quote Submission Form:</p>
-                <h5>{status}</h5>
-
-
+                <Form
+                    partnerChanged={this.onPartnerChangeHandler}
+                    shipDateChanged={this.onShipChangeHandler}
+                    bolChanged={this.onBolChangeHandler}
+                    valChanged={this.onValChangeHandler}
+                    carrierChanged={this.onCarrierChangeHandler}
+                    shipTypeChanged={this.onShipTypeChangeHandler}
+                    commodityChanged={this.onCommodityChangeHandler}
+                    oAddChanged={this.onOaddChangeHandler}
+                    oAdd2Changed={this.onOadd2ChangeHandler}
+                    oCityChanged={this.onOcityChangeHandler}
+                    oStateChanged={this.onOstateChangeHandler}
+                    oPostChanged={this.onOpostChangeHandler}
+                    oCountryChanged={this.onOcountryChangeHandler}
+                    conChanged={this.onConsigneeChangeHandler}
+                    desAddChanged={this.onDestAdd2ChangeHandler}
+                    dAdd2Changed={this.onDestAdd2ChangeHandler}
+                    dCityChanged={this.onDestCityChangeHandler}
+                    dStateChanged={this.onDestStateChangeHandler}
+                    dPostChanged={this.onDestPChangeHandler}
+                    dCountryChanged={this.onDestCounChangeHandler}
+                    serChanged={this.onServLChangeHandler}
+                    pQChanged={this.onPkgQChangeHandler}
+                    refChanged={this.onRefFieldChangeHandler}
+                    clicked={this.onClickHandler}
+                    />
+            
+            
             </div>
         );}
 
