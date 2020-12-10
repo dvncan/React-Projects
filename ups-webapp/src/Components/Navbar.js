@@ -7,12 +7,11 @@ const Navigation = (props) => {
     console.log(props);
     return (
         <Navbar bg="primary" variant="dark">
-            <Navbar.Brand href="#home">React Button</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
-                    <Nav.Link href="/">Home</Nav.Link>
-                    <Nav.Link href="/Webform">About</Nav.Link>
+                    <Nav.Link className="btn-space" href="/">Home</Nav.Link>
+                    <Nav.Link href="/Webform">Webform</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>

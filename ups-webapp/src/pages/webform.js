@@ -1,143 +1,349 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import Input from '../Components/Input'
+import Form from '../Components/Form';
 
-import classes from './webform.module.css'
+import classes from './webform.module.css';
+import axios from 'axios';
 
-class Webform extends Component {
+class Webform extends Component {  
 
-    constructor(props){
+    constructor(props) {    
         super(props);
         console.log('|App.js| constructor');
     }
     
     state = {
-        quote: [
-            {id:'partnerId', name: 'partnerId', value:''},
-            {id:'shipDate', name: 'shipDate', value:''},
-            {id:'bol', name:'billoflading', value:''},
-            {id:'insuredValue', name:'insuredValue', value:''},
-            {id:'carrier', name:'carrier', value:''},
-            {id:'shipmentType', name:'shipmentType', value:''},
-            {id:'commodity', name:'commodity', value:''},
-            {id:'originAddress', name:'originAddress', value:''},
-            {id:'originAddress2', name:'originAddress2', value:''},
-            {id:'originCity', name:'originCity', value:''},
-            {id:'originState', name:'originState', value:''},
-            {id:'origin-postal-zip', name:'originPostalCode', value:''},
-            {id:'originCountryCode', name:'originCountryCode', value:'' },
-            {id:'consigneeName', name:'consigneeName', value:''},
-            {id:'destinationAddress', name:'destinationAddress', value:''},
-            {id:'destinationAddress2', name:'destinationAddress2', value:''},
-            {id:'destinationCity', name:'destinationCity', value:''},
-            {id:'destinationState', name:'destinationState', value:''},
-            {id:'destination-postal-zip', name:'destinationPostalCode', value:''},
-            {id:'destinationCountryCode', name:'destinationCountryCode', value:''},
-            {id:'serviceLevel', name:'serviceLevel', value:''},
-            {id:'packageQuantity', name:'packageQuantity', value:''},
-            {id:'referenceFields', name:'referenceFields', value:''}
-        ]
+        url: 'https://cors-anywhere.herokuapp.com/https://upscapi.ams1907.com/apis/list-extstg/quote/v2',
+        url2: 'https://upscapi.ams1907.com/apis/list-extstg/coverage/v2',
+        success: false,
+        response: {
+            "quoteId": "",
+            "premiumAmount": "",
+            "quoteDateTime": "",
+            "quoteValidTo": "",
+            "quoteInfo": {
+                "partnerId": "API7983",
+                "status": "",
+                "shipmentInfo": {
+                    "carrier": "",
+                    "shipDate": "",
+                    "bol": "",
+                    "insuredValue": "",
+                    "shipmentType": ""
+                },
+                "originAddress": {
+                    "address1": "",
+                    "city": "",
+                    "state": "",
+                    "countryCode": ""
+                },
+                "destinationAddress": {
+                    "address1": "",
+                    "city": "",
+                    "state": "",
+                    "postalCode": "",
+                    "countryCode": ""
+                }
+            }
+        },
+        quote:{
+            partnerId: 'API7983', 
+            shipDate: new Date('2020-12-12'), 
+            billoflading:'xxx',
+            insuredValue:0, 
+            carrier:'UPS',
+            shipmentType:'2', 
+            commodity:'',
+            originAddress:'',             
+            originAddress2:'', 
+            originCity:'',
+            originState:'',
+            originPostalZip:'',
+            originCountryCode:'',
+            consignee:'',
+            destinationAddress:'',
+            destinationAddress2:'',
+            destinationCity:'',
+            destinationState:'',
+            destinationPostalZip:'',
+            destinationCountryCode:'',
+            serviceLevel:'',
+            packageQuantity:'',
+            referenceFields:''}
     }
 
-    onClickHandler = (event, props) => {
+/*    setQuoteId = (qId) => {
+        const tempQuote = {...this.state.quote};
+        tempQuote.id = qId;
+        this.setState({quote: tempQuote});
+    }*/
+
+    /*componentDidMount(quote){
+        fetch("https://cors-anywhere.herokuapp.com/https://upscapi.ams1907.com/apis/list-extstg/quote/v2")
+        .then(quote=>quote.json())
+        .then(
+            (result) =>
+            this.setState({
+                success:true,
+                response:result.data
+            })
+        )
+    }*/
+
+    onClickHandler = (event) => {
         alert('Quote request has been submitted');
         console.log('Quote request has been submitted');
-        console.log(this.state.quote);
+        console.log('quote: ', this.state.quote);
+
+        axios.post(this.state.url,this.state.quote,{
+            headers:{
+                "Access-Control-Allow-Origin": "*",
+                'Content-Type': 'application/json',
+                'Bearer': 'eyJhbGciOiJIUzM4NCJ9.eyJwYXJ0bmVySWQiOiJBUEk3OTgzIn0.qWLRUDqZm_s_O7Ob8ihVfIcDzxTIffkcJnSOYDospQIivs80EMMna6JNH1UPliK7',
+                'X-IBM-Client-Id': '1e326652-7627-41be-b8bc-159581331946',
+                'X-IBM-Client-Secret': 'Q2qG0tQ8aM6dP5eD7lM0uR5fP8nK3iX6oQ2kC4bI2yO0jT6qE4'
+                
+            }
+        }).then(res=>{
+            this.setState({response:res.data});
+            console.log(res.data);
+            this.setState({success:true})
+        })
     }
 
-    onChangeHandler = (event) =>{
-        this.setState({quote: event.target.value});
+    onPartnerChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.partnerId = event.target.value;
+        this.setState({quote: tempQuote});
     }
     
-    render(){
+    onShipChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.shipDate = event.target.value;
+        this.setState({quote: tempQuote});
+    }
 
-        let status = 'UNCONFIRMED';
+    onBolChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.billoflading = event.target.value;
+        this.setState({quote: tempQuote});
+    }
 
+    onValChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.insuredValue = event.target.value;
+        this.setState({quote: tempQuote});
+    }
+
+    onCarrierChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.carrier = event.target.value;
+        this.setState({quote: tempQuote});
+    }
+    onShipTypeChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.shipmentType = event.target.value;
+        this.setState({quote: tempQuote});
+    }
+
+    onCommodityChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.commodity = event.target.value;
+        this.setState({quote: tempQuote});
+    }
+
+    onOaddChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.originAddress = event.target.value;
+        this.setState({quote: tempQuote});
+    }
+
+    onOadd2ChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.originAddress2 = event.target.value;
+        this.setState({quote: tempQuote});
+    }
+
+    onOcityChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.originCity = event.target.value;
+        this.setState({quote: tempQuote});
+    }
+
+    onOstateChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.originState = event.target.value;
+        this.setState({quote: tempQuote});
+    }
+
+    onOpostChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.originPostalZip = event.target.value;
+        this.setState({quote: tempQuote});
+    }
+
+    onOcountryChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.originCountryCode = event.target.value;
+        this.setState({quote: tempQuote});
+    }
+
+    onConsigneeChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.consignee = event.target.value;
+        this.setState({quote: tempQuote});   
+    }
+    
+    onDestAddChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.destinationAddress = event.target.value;
+        this.setState({quote: tempQuote});
+    }
+
+    onDestAdd2ChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.destinationAddress2 = event.target.value;
+        this.setState({quote: tempQuote});
+    }
+    
+    onDestCityChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.destinationCity = event.target.value;
+        this.setState({quote: tempQuote});
+    }
+
+    onDestStateChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.destinationState = event.target.value;
+        this.setState({quote: tempQuote});
+    }
+
+    onDestPChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.destinationPostalZip = event.target.value;
+        this.setState({quote: tempQuote});
+    }
+
+    onDestCounChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.destinationCountryCode = event.target.value;
+        this.setState({quote: tempQuote});
+    }
+
+    onServLChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.serviceLevel = event.target.value;
+        this.setState({quote: tempQuote});
+    }
+
+    onPkgQChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.packageQuantity = event.target.value;
+        this.setState({quote: tempQuote});
+    }
+    
+
+    onRefFieldChangeHandler = (event) => {
+        console.log(event.target.value)
+        const tempQuote = {...this.state.quote};
+        tempQuote.referenceFields = event.target.value;
+        this.setState({quote: tempQuote});
+    }
+
+  /*  onConfirmationHandler = (event) => {
+        axios.post(this.state.url2,{
+            "quoteId": {this.state.response.quoteId},
+            "partnerId" : "API7983",
+            "bol":{}
+
+        },{
+            headers:{
+                "Access-Control-Allow-Origin": "*",
+                'Content-Type': 'application/json',
+                'Bearer': 'eyJhbGciOiJIUzM4NCJ9.eyJwYXJ0bmVySWQiOiJBUEk3OTgzIn0.qWLRUDqZm_s_O7Ob8ihVfIcDzxTIffkcJnSOYDospQIivs80EMMna6JNH1UPliK7',
+                'X-IBM-Client-Id': '1e326652-7627-41be-b8bc-159581331946',
+                'X-IBM-Client-Secret': 'Q2qG0tQ8aM6dP5eD7lM0uR5fP8nK3iX6oQ2kC4bI2yO0jT6qE4'
+                
+            }
+        }).then(res=>{
+            this.setState({response:res.data});
+            console.log(res.data);
+            this.setState({success:true})
+        })
+
+        this will need to be a success component that i pass properties through by defining inside success block
+
+    }*/
+
+    render()  {    
+    let status = 'UNCONFIRMED';
+    if(this.state.success){
         return(
-            <div className={classes.Webform}>
-                <h1>Webform</h1>
-                <p className={classes.red} >*Required Information</p>
-                <h3>{status}</h3>
-                <h3>*Partner ID:
-                    <input 
-                        type='text' 
-                        id='partnerId' 
-                        className={classes.input}
-                        onChange={this.onChangeHandler}></input>
-                </h3>
-                <h3>*Shipping Date:
-                    <input type='date' id='shipDate' className={classes.input}></input>
-                </h3>
-                <h3>*Bill of Lading:
-                    <input type='text' id='bol' className={classes.input}></input>
-                </h3>
-                <h3>*Insured Value:
-                    <input type='number' id='insuredValue' className={classes.input}></input>
-                </h3>
-                <h3>*Carrier:
-                    <input type='text' id='carrier' className={classes.input}></input>
-                </h3>
-                <h3>*Shipment Type:
-                    <input type='text' id='shipmentType' className={classes.input}></input>
-                </h3>
-                <h3>Commodity:
-                    <input type='text' id='commodity' className={classes.input}></input>
-                </h3>
-                <h3>*Origin Address:
-                    <input type='text' id='originAddress' className={classes.input}></input>
-                </h3>
-                <h3>*Origin Address 2:
-                    <input type='text' id='originAddress2' className={classes.input}></input>
-                </h3>
-                <h3>*Origin City:
-                    <input type='text' id='originCity' className={classes.input}></input>
-                </h3>
-                <h3>*Origin State:
-                    <input type='text' id='originState' className={classes.input}></input>
-                </h3>
-                <h3>*Origin Postal/Zip: 
-                    <input type='text' id='origin-postal-zip' className={classes.input}></input>
-                </h3>
-                <h3>*Origin Country:
-                    <input type='text' id='originCountryCode' className={classes.input}></input>
-                </h3>
-                <h3>Consignee Name:
-                    <input type='text' id='consigneeName' className={classes.input}></input>
-                </h3>
-                <h3>*Destination Address:
-                    <input type='text' id='destinationAddress' className={classes.input}></input>
-                </h3>
-                <h3>*Destination Address 2:
-                    <input type='text' id='destinationAddress2' className={classes.input}></input>
-                </h3>
-                <h3>*Destination City:
-                    <input type='text' id='destinationCity' className={classes.input}></input>
-                </h3>
-                <h3>*Destination State:
-                    <input type='text' id='destinationState' className={classes.input}></input>
-                </h3>
-                <h3>*Destination Postal/Zip:
-                    <input type='text' id='destination-postal-zip' className={classes.input}></input>
-                </h3>
-                <h3>*Destination Country:
-                    <input type='text' id='destinationCountryCode' className={classes.input}></input>
-                </h3>
-                <h3>Service Level:
-                    <input type='text' id='serviceLevel' className={classes.input}></input>
-                </h3>
-                <h3>Package Quantity: 
-                    <input type='number' id='packageQuantity' className={classes.input}></input>
-                </h3>
-                <h3>Reference Fields:
-                    <input type='text' id='referenceFields' className={classes.input}></input>
-                </h3>
-
-                <button 
-                    className={classes.btn}
-                    onClick={this.onClickHandler}> Submit
-                </button>
-
+            <div>
+                <p>Quote ID: {this.state.response.quoteId}</p>
+                <p>Premium Amount: {this.state.response.premiumAmount}</p>
+                <p>Status: {this.state.response.quoteInfo.status} </p>
             </div>
         )
-    }
+    };
+
+        return(
+            <div className='Webform'>
+                <h1>Webform</h1>
+                <p> Quote Submission Form:</p>
+                <Form
+                    partnerChanged={this.onPartnerChangeHandler}
+                    shipDateChanged={this.onShipChangeHandler}
+                    bolChanged={this.onBolChangeHandler}
+                    valChanged={this.onValChangeHandler}
+                    carrierChanged={this.onCarrierChangeHandler}
+                    shipTypeChanged={this.onShipTypeChangeHandler}
+                    commodityChanged={this.onCommodityChangeHandler}
+                    oAddChanged={this.onOaddChangeHandler}
+                    oAdd2Changed={this.onOadd2ChangeHandler}
+                    oCityChanged={this.onOcityChangeHandler}
+                    oStateChanged={this.onOstateChangeHandler}
+                    oPostChanged={this.onOpostChangeHandler}
+                    oCountryChanged={this.onOcountryChangeHandler}
+                    conChanged={this.onConsigneeChangeHandler}
+                    desAddChanged={this.onDestAdd2ChangeHandler}
+                    dAdd2Changed={this.onDestAdd2ChangeHandler}
+                    dCityChanged={this.onDestCityChangeHandler}
+                    dStateChanged={this.onDestStateChangeHandler}
+                    dPostChanged={this.onDestPChangeHandler}
+                    dCountryChanged={this.onDestCounChangeHandler}
+                    serChanged={this.onServLChangeHandler}
+                    pQChanged={this.onPkgQChangeHandler}
+                    refChanged={this.onRefFieldChangeHandler}
+                    clicked={this.onClickHandler}
+                    />
+            
+            
+            </div>
+        );}
+
 }
 
 

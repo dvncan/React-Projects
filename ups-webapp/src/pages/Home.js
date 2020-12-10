@@ -9,9 +9,9 @@ export default class Home extends Component {
       <div className="Home">
         <div className="lander">
           <h1>Home page</h1>
-          <p>A simple app showing react button click navigation</p>
+          <p>A simple app for UPS quote submission</p>
           <form>
-            <Button variant="btn btn-success" onClick={() => history.push('./webform')}>Click button to view products</Button>
+            <Button variant="btn btn-success" onClick={() => history.push('./webform')}>Click button to view webform</Button>
           </form>
         </div>
       </div>
